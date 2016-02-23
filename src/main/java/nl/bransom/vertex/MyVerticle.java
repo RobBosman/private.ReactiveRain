@@ -19,8 +19,14 @@ public class MyVerticle extends AbstractVerticle {
 
     vertx.createHttpServer()
         .requestHandler(request -> {
+          request.handler(buffer ->
+              System.out.println("received some bytes: " + buffer.toString()));
+
+          request.bodyHandler(totalBuffer ->
+            System.out.println("Full body received, path = " + request.path() + ", length = " + totalBuffer.length()));
+
           request.response().end("Hello world");
-//          request.handler(buffer -> System.out.println("received some bytes: " + buffer.toString()));
+
         })
         .listen(8080, "localhost", res -> {
           if (res.succeeded()) {

@@ -10,7 +10,12 @@ import io.vertx.core.eventbus.EventBus;
 public class Main {
 
   public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
+    doVertex();
+    doThis(42, System.out::println);
+  }
+
+  public static void doVertex() {
+    final Vertx vertx = Vertx.vertx();
 
     vertx.setTimer(10000, timerId -> {
       vertx.close();
@@ -50,5 +55,14 @@ public class Main {
         System.out.println("Deployment failed!");
       }
     });
+  }
+
+  public static void doThis(final int i, final SomeHandler<Integer> handler) {
+    handler.handle(i);
+  }
+
+  @FunctionalInterface
+  public interface SomeHandler<E> {
+    void handle(E var1);
   }
 }
