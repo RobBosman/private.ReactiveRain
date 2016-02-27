@@ -1,44 +1,43 @@
 package nl.bransom.vertex;
 
 import io.vertx.core.AbstractVerticle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Created by robbo on 21-02-2016.
- */
 public class MyVerticle extends AbstractVerticle {
+  
+  private static final Logger LOG = LoggerFactory.getLogger(MyVerticle.class);
 
   @Override
   public void start() {
-    System.out.println(getClass().getName() + " - deployed");
+    LOG.info(getClass().getName() + " - deployed");
 
     vertx.eventBus().consumer("news.uk.sport")
         .handler(message -> {
-          System.out.println("received message: " + message.body());
+          LOG.info("received message: " + message.body());
           message.reply("how interesting!");
         });
 
     vertx.createHttpServer()
         .requestHandler(request -> {
-          request.handler(buffer ->
-              System.out.println("received some bytes: " + buffer.toString()));
+          request.handler(buffer -> LOG.debug("received some bytes: " + buffer.toString()));
 
-          request.bodyHandler(totalBuffer ->
-            System.out.println("Full body received, path = " + request.path() + ", length = " + totalBuffer.length()));
+          request.bodyHandler(totalBuffer -> LOG.debug("Full body received, path = " + request.path() + ", length = " + totalBuffer.length()));
 
           request.response().end("Hello world");
 
         })
         .listen(8080, "localhost", res -> {
           if (res.succeeded()) {
-            System.out.println("Server is now listening on http://localhost:8080/");
+            LOG.info("Server is now listening on http://localhost:8080/");
           } else {
-            System.out.println("Failed to bind!");
+            LOG.error("Failed to bind!", res.cause());
           }
         });
   }
 
   @Override
   public void stop() {
-    System.out.println(getClass().getName() + " - undeployed");
+    LOG.info(getClass().getName() + " - undeployed");
   }
 }
