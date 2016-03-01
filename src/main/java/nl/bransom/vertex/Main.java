@@ -69,26 +69,11 @@ public class Main {
       if (res.succeeded()) {
         observableDeploymentId.toHandler().handle(res);
         final String deploymentId = res.result();
-//        vertx.eventBus().publish("deployed verticle", deploymentId);
         LOG.info("Deployment id is: " + deploymentId);
       } else {
         LOG.error("Deployment failed.", res.cause());
       }
     });
-
-//    vertx.eventBus().consumer("deployed verticle", res -> {
-//      final String deploymentId = (String) res.body();
-//      LOG.debug("Deployment id from result is: " + deploymentId);
-//      vertx.setTimer(6000, timerId ->
-//          vertx.undeploy(deploymentId, res2 -> {
-//            if (res2.succeeded()) {
-//              LOG.info("shut down " + deploymentId + " OK");
-//            } else {
-//              LOG.error("shut down " + deploymentId + " failed", res2.cause());
-//            }
-//          })
-//      );
-//    });
   }
 
   public static <T> void handleThat(final T t, final Handler<T> handler) {
