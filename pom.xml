@@ -39,6 +39,20 @@
       <version>3.2.1</version>
     </dependency>
 
+    <!-- Rx-ified API -->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-rx-java</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+    <!--
+    <dependency>
+      <groupId>io.reactivex</groupId>
+      <artifactId>rxjava</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    -->
+
     <!-- vertx cluster manager -->
     <dependency>
       <groupId>io.vertx</groupId>
