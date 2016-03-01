@@ -3,10 +3,10 @@ package nl.bransom.vertex;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.rx.java.ObservableFuture;
 import io.vertx.rx.java.RxHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
 
 public class Main {
 
@@ -49,11 +49,12 @@ public class Main {
       });
     });
 
-    final Observable<String> observableDeploymentId = RxHelper.observableHandler();
+    final ObservableFuture<String> observableDeploymentId = RxHelper.observableFuture();
+
     observableDeploymentId.subscribe(value -> {
       final String deploymentId = value;
       LOG.debug("Deployment id from result is: " + deploymentId);
-      vertx.setTimer(6000, timerId ->
+      vertx.setTimer(5000, timerId ->
           vertx.undeploy(deploymentId, res2 -> {
             if (res2.succeeded()) {
               LOG.info("shut down " + deploymentId + " OK");
@@ -66,29 +67,28 @@ public class Main {
 
     vertx.deployVerticle(MyVerticle.class.getName(), res -> {
       if (res.succeeded()) {
+        observableDeploymentId.toHandler().handle(res);
         final String deploymentId = res.result();
-//        observableDeploymentId.; // TODO - ?
-        observableDeploymentId.startWith(deploymentId);
-        vertx.eventBus().publish("deployed verticle", deploymentId);
+//        vertx.eventBus().publish("deployed verticle", deploymentId);
         LOG.info("Deployment id is: " + deploymentId);
       } else {
         LOG.error("Deployment failed.", res.cause());
       }
     });
 
-    vertx.eventBus().consumer("deployed verticle", res -> {
-      final String deploymentId = (String) res.body();
-      LOG.debug("Deployment id from result is: " + deploymentId);
-      vertx.setTimer(6000, timerId ->
-          vertx.undeploy(deploymentId, res2 -> {
-            if (res2.succeeded()) {
-              LOG.info("shut down " + deploymentId + " OK");
-            } else {
-              LOG.error("shut down " + deploymentId + " failed", res2.cause());
-            }
-          })
-      );
-    });
+//    vertx.eventBus().consumer("deployed verticle", res -> {
+//      final String deploymentId = (String) res.body();
+//      LOG.debug("Deployment id from result is: " + deploymentId);
+//      vertx.setTimer(6000, timerId ->
+//          vertx.undeploy(deploymentId, res2 -> {
+//            if (res2.succeeded()) {
+//              LOG.info("shut down " + deploymentId + " OK");
+//            } else {
+//              LOG.error("shut down " + deploymentId + " failed", res2.cause());
+//            }
+//          })
+//      );
+//    });
   }
 
   public static <T> void handleThat(final T t, final Handler<T> handler) {
