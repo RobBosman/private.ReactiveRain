@@ -39,25 +39,32 @@
       <version>3.2.1</version>
     </dependency>
 
-    <!-- Rx-ified API -->
+    <!-- Rxified API -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-rx-java</artifactId>
       <version>3.2.1</version>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>io.reactivex</groupId>
-      <artifactId>rxjava</artifactId>
-      <version>1.1.1</version>
-    </dependency>
-    -->
 
     <!-- vertx cluster manager -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-hazelcast</artifactId>
       <version>3.2.1</version>
+    </dependency>
+
+    <!-- testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-unit</artifactId>
+      <version>3.2.1</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>

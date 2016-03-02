@@ -1,6 +1,7 @@
 package nl.bransom.vertex;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.shareddata.AsyncMap;
 import io.vertx.core.shareddata.LocalMap;
@@ -13,7 +14,7 @@ public class MyVerticle extends AbstractVerticle {
   private static final Logger LOG = LoggerFactory.getLogger(MyVerticle.class);
 
   @Override
-  public void start() {
+  public void start(final Future<Void> startFuture) {
     LOG.info(getClass().getName() + " - deployed");
 
     if (vertx.isClustered()) {
@@ -39,8 +40,10 @@ public class MyVerticle extends AbstractVerticle {
         .listen(8080, "localhost", res -> {
           if (res.succeeded()) {
             LOG.info("Server is now listening on http://localhost:8080/");
+            startFuture.complete();
           } else {
             LOG.error("Failed to bind!", res.cause());
+            startFuture.fail(res.cause());
           }
         });
   }

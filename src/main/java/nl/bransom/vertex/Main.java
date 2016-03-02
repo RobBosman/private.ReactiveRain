@@ -21,17 +21,17 @@ public class Main {
       final VertxOptions options = new VertxOptions();
       Vertx.clusteredVertx(options, res -> {
         if (res.succeeded()) {
-          doVertex(res.result());
+          doSomething(res.result());
         } else {
           LOG.error("Error getting clustered vertx.", res.cause());
         }
       });
     } else {
-      doVertex(Vertx.vertx());
+      doSomething(Vertx.vertx());
     }
   }
 
-  public static void doVertex(final Vertx vertx) {
+  public static void doSomething(final Vertx vertx) {
     vertx.setTimer(10000, timerId -> {
       vertx.close();
       LOG.info("...and it's gone");
