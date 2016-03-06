@@ -32,7 +32,7 @@
       <version>1.0.13</version>
     </dependency>
 
-    <!-- vertx core -->
+    <!-- Vertx core -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
@@ -46,7 +46,14 @@
       <version>3.2.1</version>
     </dependency>
 
-    <!-- vertx cluster manager -->
+    <!-- Vertx web -->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+
+    <!-- Vertx cluster manager -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-hazelcast</artifactId>

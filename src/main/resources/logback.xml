@@ -10,7 +10,7 @@
     </layout>
   </appender>
 
-  <logger name="nl.bransom.vertex" level="DEBUG" additivity="false">
+  <logger name="nl.bransom.vertx" level="DEBUG" additivity="false">
     <appender-ref ref="STDOUT"/>
   </logger>
 

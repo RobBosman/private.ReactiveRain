@@ -1,4 +1,4 @@
-package nl.bransom.vertex;
+package nl.bransom.vertx;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -16,6 +16,8 @@ public class MyVerticle extends AbstractVerticle {
   @Override
   public void start(final Future<Void> startFuture) {
     LOG.info(getClass().getName() + " - deployed");
+
+    handleThat(42, i -> LOG.info("" + i));
 
     if (vertx.isClustered()) {
       putCvJsonOnClusterWideMap(vertx, "JSON DATA CLUSTERED");
@@ -103,5 +105,14 @@ public class MyVerticle extends AbstractVerticle {
 
   private static void dealWithCvJson(final String cvJson) {
     LOG.info("Got it: " + cvJson);
+  }
+
+  public static <T> void handleThat(final T t, final Handler<T> handler) {
+    handler.handle(t);
+  }
+
+  @FunctionalInterface
+  public interface Handler<E> {
+    void handle(E var1);
   }
 }

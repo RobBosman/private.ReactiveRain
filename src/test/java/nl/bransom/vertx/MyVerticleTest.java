@@ -1,4 +1,4 @@
-package nl.bransom.vertex;
+package nl.bransom.vertx;
 
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.Async;
