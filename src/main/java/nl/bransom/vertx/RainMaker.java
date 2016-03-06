@@ -1,6 +1,8 @@
 package nl.bransom.vertx;
 
+import io.vertx.core.Future;
 import io.vertx.rxjava.core.AbstractVerticle;
+import io.vertx.rxjava.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
@@ -14,6 +16,14 @@ import java.util.Random;
 public class RainMaker extends AbstractVerticle {
 
   private static final Logger LOG = LoggerFactory.getLogger(RainMaker.class);
+
+  public static void startRaining(final Vertx vertx, final Future<Void> result) {
+    vertx.eventBus().send("RainMaker", RainMaker.START, Main.handleFuture(result));
+  }
+
+  public static void stopRaining(final Vertx vertx) {
+    vertx.eventBus().publish("RainMaker", RainMaker.STOP);
+  }
 
   public static final String START = "start";
   public static final String STOP = "stop";

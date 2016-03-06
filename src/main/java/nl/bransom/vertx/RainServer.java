@@ -16,7 +16,7 @@ public class RainServer extends AbstractVerticle {
             .handler(buffer -> LOG.debug("received some bytes: " + buffer.toString()))
             .bodyHandler(totalBuffer -> LOG.debug("Full body received, path = " + request.path() + ", length = " + totalBuffer.length()))
             .response().end("Hello world"))
-        .listen(8080, "localhost", res -> {
+        .listen(8080, res -> {
           if (res.succeeded()) {
             LOG.info("Server is now listening on http://localhost:8080/");
             startFuture.complete();
