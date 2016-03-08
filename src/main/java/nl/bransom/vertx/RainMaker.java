@@ -44,14 +44,15 @@ public class RainMaker extends AbstractVerticle {
         .subscribe(intervalMillis -> {
           LOG.debug("RainMaker.intervalMillis = " + intervalMillis);
           if (intervalMillis > 0) {
-            Observable.<RainDrop>create(subscriber ->
-                vertx.setPeriodic(intervalMillis, timerId -> {
-                  if (subscriber.isUnsubscribed()) {
-                    vertx.cancelTimer(timerId);
-                  } else {
-                    subscriber.onNext(new RainDrop(random));
-                  }
-                }))
+            Observable
+                .<RainDrop>create(subscriber ->
+                    vertx.setPeriodic(intervalMillis, timerId -> {
+                      if (subscriber.isUnsubscribed()) {
+                        vertx.cancelTimer(timerId);
+                      } else {
+                        subscriber.onNext(new RainDrop(random));
+                      }
+                    }))
                 .doOnNext(rainDrops::add)
                 .subscribe(rds);
           } else {
