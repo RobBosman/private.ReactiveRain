@@ -37,18 +37,17 @@ public class Main {
     final Future<String> startRainMakerResult = Future.future();
     vertx.deployVerticle(RainMaker.class.getName(), handleFuture(startRainMakerResult));
 
-    final Future<Void> startRainingResult = Future.future();
+    final Future<Void> startRainingResult = Future.<Void>future()
+        .setHandler(res -> {
+          if (res.succeeded()) {
+            LOG.info("Started raining");
+            vertx.setTimer(3000, timerId -> RainMaker.stopRaining(vertx));
+          } else {
+            LOG.error("Error starting rain: ", res.cause());
+          }
+        });
     vertx.deployVerticleObservable(RainServer.class.getName())
         .subscribe(deploymentId -> RainMaker.startRaining(vertx, startRainingResult));
-
-    startRainingResult.setHandler(res -> {
-      if (res.succeeded()) {
-        LOG.info("Started raining");
-        vertx.setTimer(3000, timerId -> RainMaker.stopRaining(vertx));
-      } else {
-        LOG.error("Error starting rain: ", res.cause());
-      }
-    });
   }
 
   public static <T,R> Handler<AsyncResult<R>> handleFuture(final Future<T> futureResult) {
