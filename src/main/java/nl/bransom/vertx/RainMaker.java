@@ -7,13 +7,12 @@ import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Subscriber;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class RainMaker extends AbstractVerticle {
 
-  public static final String INTENSITY_TAG = "RainMaker.intensity";
+  public static final String INTENSITY_MSG = "RainMaker.intensity";
+  public static final String RAIN_DROP_MSG = "RainDrop";
 
   private static final Logger LOG = LoggerFactory.getLogger(RainMaker.class);
   private static final long MAX_INTERVAL_MILLIS = 3000;
@@ -28,27 +27,24 @@ public class RainMaker extends AbstractVerticle {
 
   @Override
   public void start() {
-    final List<RainDrop> rainDrops = new ArrayList<>();
-
     vertx.eventBus()
-        .<Double>consumer(INTENSITY_TAG)
+        .<Double>consumer(INTENSITY_MSG)
         .toObservable()
         .doOnNext(message -> message.reply("OK"))
         .map(Message::body)
         .map(RainMaker::intensityToAverageIntervalMillis)
-        .doOnNext(intervalMillis -> {
-          if (delayTimerID != null) {
-            vertx.cancelTimer(delayTimerID);
-            delayTimerID = null;
-          }
-        })
-        .doOnNext(intervalMillis -> {
-          this.intervalMillis = intervalMillis;
-          LOG.info("intervalMillis: " + intervalMillis);
-        })
+        .doOnNext(this::setAverageIntervalMillis)
         .flatMap(intervalMillis -> Observable.<RainDrop>create(this::createDelayedRainDrop))
-        .doOnNext(rainDrops::add)
-        .subscribe(rainDrop -> LOG.info("\t" + rainDrop));
+        .subscribe(rainDrop -> vertx.eventBus().send(RAIN_DROP_MSG, rainDrop.toString()));
+  }
+
+  private void setAverageIntervalMillis(final long intervalMillis) {
+    LOG.info("intervalMillis: " + intervalMillis);
+    if (delayTimerID != null) {
+      vertx.cancelTimer(delayTimerID);
+      delayTimerID = null;
+    }
+    this.intervalMillis = intervalMillis;
   }
 
   private static long intensityToAverageIntervalMillis(final double intensity) {
