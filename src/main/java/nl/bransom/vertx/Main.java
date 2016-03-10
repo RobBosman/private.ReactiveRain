@@ -1,8 +1,6 @@
 package nl.bransom.vertx;
 
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
-import io.vertx.core.Handler;
 import io.vertx.core.VertxOptions;
 import io.vertx.rxjava.core.Vertx;
 import org.slf4j.Logger;
@@ -34,29 +32,22 @@ public class Main {
       LOG.info("And... it's gone!");
     });
 
-    final Future<String> startRainMakerResult = Future.future();
-    vertx.deployVerticle(RainMaker.class.getName(), handleFuture(startRainMakerResult));
-
-    final Future<Void> startRainingResult = Future.<Void>future()
-        .setHandler(res -> {
-          if (res.succeeded()) {
-            LOG.info("Started raining");
-            vertx.setTimer(3000, timerId -> RainMaker.stopRaining(vertx));
-          } else {
-            LOG.error("Error starting rain: ", res.cause());
-          }
-        });
-    vertx.deployVerticleObservable(RainServer.class.getName())
-        .subscribe(deploymentId -> RainMaker.startRaining(vertx, startRainingResult));
-  }
-
-  public static <T,R> Handler<AsyncResult<R>> handleFuture(final Future<T> futureResult) {
-    return res -> {
+    final Future<String> startRainMakerResult = Future.<String>future();
+    vertx.deployVerticle(RainMaker.class.getName(), res -> {
       if (res.succeeded()) {
-        futureResult.complete();
+        startRainMakerResult.complete();
       } else {
-        futureResult.fail(res.cause());
+        startRainMakerResult.fail(res.cause());
       }
-    };
+    });
+    vertx.deployVerticleObservable(RainServer.class.getName())
+        .subscribe();
+    startRainMakerResult.setHandler(res -> {
+      if (res.succeeded()) {
+        vertx.setTimer(3000, timerId -> vertx.eventBus().send(RainMaker.INTENSITY_TAG, 0.85));
+      } else {
+        LOG.error("Error starting rain: ", res.cause());
+      }
+    });
   }
 }
