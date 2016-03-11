@@ -1,6 +1,6 @@
 package nl.bransom.reactive;
 
-import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.AbstractVerticle;
 import io.vertx.rxjava.core.eventbus.Message;
 import org.slf4j.Logger;
@@ -10,24 +10,22 @@ import rx.Subscriber;
 
 import java.util.Random;
 
-public class RainMaker extends AbstractVerticle {
+public class RainMaker extends AbstractVerticle implements RainConstants {
 
   private static final Logger LOG = LoggerFactory.getLogger(RainMaker.class);
-  private static final long MAX_INTERVAL_MILLIS = 3000;
-
-  public static final String INTENSITY_MSG = "RainMaker.intensity";
-  public static final String RAIN_DROP_MSG = "RainDrop";
 
   @Override
   public void start() {
     vertx.eventBus()
-        .<Double>consumer(INTENSITY_MSG)
+        .<JsonObject>consumer(RAIN_MAKER_ADDRESS)
         .toObservable()
-        .doOnNext(message -> message.reply("OK"))
         .map(Message::body)
+        .map(json -> json.getDouble(INTENSITY_KEY))
         .map(this::intensityToIntervalMillis)
         .switchMap(this::createRainDrops)
-        .subscribe(rainDrop -> vertx.eventBus().send(RAIN_DROP_MSG, Json.encode(rainDrop)));
+        .subscribe(
+            rainDrop -> vertx.eventBus().publish(RAIN_DROP_ADDRESS, rainDrop.toJson()),
+            t -> LOG.error("Error making rain.", t));
   }
 
   private long intensityToIntervalMillis(final double intensity) {
