@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>nl.bransom</groupId>
-  <artifactId>vertx</artifactId>
+  <artifactId>reactive</artifactId>
   <version>0.1-SNAPSHOT</version>
 
   <properties>

@@ -1,4 +1,4 @@
-package nl.bransom.vertx;
+package nl.bransom.reactive;
 
 import io.vertx.core.VertxOptions;
 import io.vertx.rxjava.core.CompositeFuture;
@@ -29,23 +29,24 @@ public class Main {
   }
 
   public static void goForIt(final Vertx vertx) {
-    vertx.setTimer(5000, timerId -> {
+    vertx.setTimer(15000, timerId -> {
       vertx.close();
       LOG.info("And... it's gone!");
     });
 
-    final Future<String> atRainMakerStart = Future.<String>future();
-    final Future<String> atRainServerStart = Future.<String>future();
+    final Future<String> atRainMakerStart = Future.future();
+    final Future<String> atRainServerStart = Future.future();
 
     vertx.deployVerticle(RainMaker.class.getName(), atRainMakerStart.completer());
     vertx.deployVerticle(RainServer.class.getName(), atRainServerStart.completer());
 
     CompositeFuture.all(atRainMakerStart, atRainServerStart).setHandler(res -> {
       if (res.succeeded()) {
-        vertx.eventBus().send(RainMaker.INTENSITY_MSG, 0.8);
-        vertx.setTimer(3000, timerId -> vertx.eventBus().send(RainMaker.INTENSITY_MSG, 0.0));
+        vertx.eventBus().send(RainMaker.INTENSITY_MSG, 0.9);
+        vertx.setTimer(4000, timerId -> vertx.eventBus().send(RainMaker.INTENSITY_MSG, 0.4));
+        vertx.setTimer(8000, timerId -> vertx.eventBus().send(RainMaker.INTENSITY_MSG, 0.0));
       } else {
-        LOG.error("There won't be any rain: ", res.cause());
+        LOG.error("There won't be any rain today...", res.cause());
       }
     });
 
@@ -53,6 +54,6 @@ public class Main {
         .<String>consumer(RainMaker.RAIN_DROP_MSG)
         .toObservable()
         .map(Message::body)
-        .subscribe(rainDrop -> LOG.info("\t" + rainDrop));
+        .subscribe(rainDropJson -> LOG.debug("\t{}", rainDropJson));
   }
 }

@@ -1,4 +1,4 @@
-package nl.bransom.vertx;
+package nl.bransom.reactive;
 
 import io.vertx.core.Future;
 import io.vertx.rxjava.core.AbstractVerticle;
@@ -18,12 +18,8 @@ public class RainServer extends AbstractVerticle {
     router.route("/*")
         .handler(routingContext -> {
           routingContext.response()
-              // enable chunked responses because we will be adding data as
-              // we execute over other handlers. This is only required once and
-              // only if several handlers do output.
-              .setChunked(true)
               .putHeader("content-type", "text/plain")
-              .write("Hello World via route1\n")
+              .write("Hello World via route")
               .end();
           routingContext.next();
         });
