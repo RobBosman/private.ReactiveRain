@@ -8,14 +8,13 @@
   <script src="/js/rain.js"></script>
 </head>
 <body>
-  <h1>Hello Rain!</h1>
+  <h1>Reactive rain</h1>
   <div id="raindrop-count">No rain drops detected yet.</div>
-  <button onclick="addRain(0.1)">up</button>
-  <button onclick="addRain(-0.1)">down</button>
+  <button onclick="addRain(0.1)">faster</button>
+  <button onclick="addRain(-0.1)">slower</button>
   <button onclick="addRain(-rainIntensity)">stop</button>
-  <br/>
 
-  <svg id="tile-svg" class="tile" xmlns="http://www.w3.org/2000/svg">No SVG? Oh come on, this is sooo 2005! Use a decent browser.</svg>
+  <div id="tile"></div>
 
 </body>
 </html>
