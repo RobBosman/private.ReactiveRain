@@ -3,10 +3,3 @@
   height: 500px;
   border: 1px solid #000;
 }
-.circle {
-  background: #888;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  position: relative;
-}

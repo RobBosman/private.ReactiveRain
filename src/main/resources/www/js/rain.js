@@ -11,25 +11,16 @@ eb.onopen = function() {
 }
 
 function drawRainDrop(rainDrop) {
-  drawRainDropCanvas(rainDrop);
-}
-
-function drawRainDropCanvas(rainDrop) {
-  var tile = document.getElementById("tile-canvas");
-  var context = tile.getContext("2d");
-  context.moveTo(tile.width * rainDrop.x, tile.height * (1.0 - rainDrop.y));
-  context.lineTo(0, tile.height);
-  context.stroke();
-}
-
-function drawRainDropCss(rainDrop) {
-  var tile = document.getElementById("tile-css");
-  var drop = document.createElement("div");
-  drop.className = "circle";
-  drop.setAttribute("style",
-    "left:" + Math.round(tile.clientWidth * rainDrop.x - drop.clientWidth / 2.0) + "px;" +
-    "top:" + Math.round(tile.clientHeight * (1.0 - rainDrop.y) - drop.clientHeight / 2.0) + "px;");
+  var tile = document.getElementById("tile-svg");
+  var drop = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  drop.id = rainDrop.count;
+  drop.setAttribute("cx", Math.round(tile.clientWidth * rainDrop.x));
+  drop.setAttribute("cy", Math.round(tile.clientHeight * rainDrop.y));
+  drop.setAttribute("r", 5);
+  drop.setAttribute("fill", "#00f");
   tile.appendChild(drop);
+
+  setTimeout(function() { tile.removeChild(drop); }, 2000);
 }
 
 

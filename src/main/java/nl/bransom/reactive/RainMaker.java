@@ -29,8 +29,9 @@ public class RainMaker extends AbstractVerticle implements RainConstants {
   }
 
   private long intensityToIntervalMillis(final double intensity) {
-    LOG.debug("intensity: {}", intensity);
-    return Math.round(Math.pow(Math.E, Math.log(MAX_INTERVAL_MILLIS) * (1.0 - intensity)));
+    final double effectiveIntensity = Math.min(Math.max(0.0, intensity), 1.0);
+    LOG.debug("intensity: {}", effectiveIntensity);
+    return Math.round(Math.pow(Math.E, Math.log(MAX_INTERVAL_MILLIS) * (1.0 - effectiveIntensity)));
   }
 
   private long sampleDelayMillis(final long intervalMillis) {
