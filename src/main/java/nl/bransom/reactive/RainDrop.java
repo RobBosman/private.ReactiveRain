@@ -4,7 +4,7 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.Random;
 
-public class RainDrop {
+class RainDrop {
 
   private static int count;
 

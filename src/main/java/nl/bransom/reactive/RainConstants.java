@@ -1,6 +1,6 @@
 package nl.bransom.reactive;
 
-public interface RainConstants {
+interface RainConstants {
 
   String RAIN_MAKER_ADDRESS = "RainMaker";
 

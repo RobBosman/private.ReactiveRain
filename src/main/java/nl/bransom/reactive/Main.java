@@ -27,7 +27,7 @@ public class Main implements RainConstants {
     }
   }
 
-  public static void goForIt(final Vertx vertx) {
+  private static void goForIt(final Vertx vertx) {
 //    vertx.setTimer(12000, timerId -> {
 //      vertx.close();
 //      LOG.info("And... it's gone!");
