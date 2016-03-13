@@ -8,6 +8,8 @@ public interface RainConstants {
 
   String INTENSITY_KEY = "intensity";
 
+  int SERVER_PORT = 8080;
+
   long MAX_INTERVAL_MILLIS = 3000;
 
   boolean CLUSTERED = false;
