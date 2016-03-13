@@ -6,8 +6,6 @@ import java.util.Random;
 
 class RainDrop {
 
-  private static int count;
-
   private final float x;
   private final float y;
 
@@ -15,13 +13,11 @@ class RainDrop {
     final Random random = new Random();
     x = random.nextFloat();
     y = random.nextFloat();
-    count++;
   }
 
   public JsonObject toJson() {
     return new JsonObject()
         .put("x", x)
-        .put("y", y)
-        .put("count", count);
+        .put("y", y);
   }
 }

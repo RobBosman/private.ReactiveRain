@@ -1,7 +1,7 @@
 #tile {
   width: 500px;
   height: 500px;
-  border: 1px solid #000;
+  border: 1px solid #008;
 }
 svg {
   width: 100%;
@@ -10,11 +10,10 @@ svg {
 circle {
   fill: #fff;
   r: 0;
-  animation-name: drop;
+  animation-name: fade_drop;
   animation-duration: 2s;
 }
-
-@keyframes drop {
+@keyframes fade_drop {
   from {r: 2%; fill: #00f;}
   to {r: 0; fill: #fff;}
 }

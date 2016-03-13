@@ -39,7 +39,7 @@
       <version>3.2.1</version>
     </dependency>
 
-    <!-- Rxified API -->
+    <!-- Vertx Rx-ified API -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-rx-java</artifactId>
@@ -54,11 +54,13 @@
     </dependency>
 
     <!-- Vertx cluster manager -->
+    <!--
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-hazelcast</artifactId>
       <version>3.2.1</version>
     </dependency>
+    -->
 
     <!-- testing -->
     <dependency>

@@ -28,11 +28,6 @@ public class Main implements RainConstants {
   }
 
   private static void goForIt(final Vertx vertx) {
-//    vertx.setTimer(12000, timerId -> {
-//      vertx.close();
-//      LOG.info("And... it's gone!");
-//    });
-
     final Future<String> atRainMakerStart = Future.future();
     final Future<String> atRainServerStart = Future.future();
 
@@ -53,5 +48,10 @@ public class Main implements RainConstants {
 //        .toObservable()
 //        .map(Message::body)
 //        .subscribe(rainDropJsonObject -> LOG.debug("\t{}", rainDropJsonObject));
+
+//    vertx.setTimer(12000, timerId -> {
+//      vertx.close();
+//      LOG.info("And... it's gone!");
+//    });
   }
 }
