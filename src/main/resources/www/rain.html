@@ -8,50 +8,43 @@
   <script src="/js/rain.js"></script>
 </head>
 <body>
-  <h1>Reactive rain</h1>
+  <h1>Reactive rain in Monte Carlo</h1>
   <div id="raindrop-count"></div>
 
   <div id="correlation">
     <table>
       <tr>
-        <td rowspan="11"><div id="tile"></div></td>
+        <td rowspan="9"><div id="tile"></div></td>
         <td>Total number of drops</td>
         <td><div id="num-drops"></div></td>
       </tr>
       <tr>
-        <td>Last drop x</td>
-        <td><div id="drop-x"></div></td>
+        <td>Num drops within radius</td>
+        <td><div id="num-within-radius"></div></td>
       </tr>
       <tr>
-        <td>Last drop y</td>
-        <td><div id="drop-y"></div></td>
+        <td>pi</td>
+        <td><div id="pi"></div></td>
       </tr>
       <tr>
-        <td>Total product x</td>
-        <td><div id="total-product-x"></div></td>
+        <td>Average x</td>
+        <td><div id="average-x"></div></td>
       </tr>
       <tr>
-        <td>Total product y</td>
-        <td><div id="total-product-y"></div></td>
-      </tr>
-      <tr>
-        <td>Variance x</td>
-        <td><div id="variance-x"></div></td>
-      </tr>
-      <tr>
-        <td>Variance y</td>
-        <td><div id="variance-y"></div></td>
+        <td>Average y</td>
+        <td><div id="average-y"></div></td>
       </tr>
       <tr>
         <td>Correlation coefficient</td>
         <td><div id="correlation-coefficient"></div></td>
       </tr>
+      <tr><td colspan="2" height="100%">&nbsp;</td></tr>
       <tr>
-        <td colspan="2" height="100%">&nbsp;</td>
+        <td>Intensity</td>
+        <td><div id="rain-intensity"></div></td>
       </tr>
       <tr>
         <td colspan="2">
-          <div id="rain-intensity"></div>
           <button onclick="setRainIntensity(rainIntensity + 0.1)">faster</button>
           <button onclick="setRainIntensity(rainIntensity - 0.1)">slower</button>
           <button onclick="setRainIntensity(0.0)">stop</button>

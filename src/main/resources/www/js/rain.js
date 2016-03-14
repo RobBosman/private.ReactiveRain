@@ -6,10 +6,12 @@ var DROP_TIME_TO_LIVE = 2000;
 var eventBus = new EventBus('/eventbus');
 var rainIntensity = 0.0;
 var numRainDrops = 0;
-var totalProductX = 1.0;
-var totalProductY = 1.0;
-var varianceX = 0.0;
-var varianceY = 0.0;
+var numWithinRadius = 0;
+var sumX = 0.0;
+var sumY = 0.0;
+var sumDeviationXY = 0.0;
+var sumSquaredDeviationX = 0.0;
+var sumSquaredDeviationY = 0.0;
 var correlationCoefficient = 0.0;
 
 eventBus.onopen = function() {
@@ -30,7 +32,7 @@ eventBus.onopen = function() {
 
 function setRainIntensity(newIntensity) {
   rainIntensity = Math.min(Math.max(0.0, newIntensity), 1.0);
-  document.getElementById('rain-intensity').innerHTML = "Intensity: " + Math.round(100.0 * rainIntensity) + "%";
+  document.getElementById('rain-intensity').innerHTML = Math.round(100.0 * rainIntensity) + "%";
   eventBus.send('RainMaker', {intensity: rainIntensity});
 }
 
@@ -38,24 +40,27 @@ function setRainIntensity(newIntensity) {
 function updateDropCounter(err, msg) {
   var rainDrop = msg.body;
 
-  // TODO fix computations
   numRainDrops++;
-  totalProductX *= rainDrop.x;
-  totalProductY *= rainDrop.y;
-  var deltaX = Math.abs(rainDrop.x - totalProductX);
-  var deltaY = Math.abs(rainDrop.y - totalProductY);
-  varianceX += deltaX * deltaX / numRainDrops;
-  varianceY += deltaY * deltaY / numRainDrops;
-  if (varianceX * varianceY != 0.0) {
-    correlationCoefficient += deltaX * deltaY / Math.sqrt(varianceX * varianceY);
+  if (rainDrop.x * rainDrop.x + rainDrop.y * rainDrop.y <= 1.0) {
+    numWithinRadius++;
+  }
+  sumX += rainDrop.x;
+  sumY += rainDrop.y;
+  var averageX = sumX / numRainDrops;
+  var averageY = sumY / numRainDrops;
+  var deviationX = rainDrop.x - averageX;
+  var deviationY = rainDrop.y - averageY;
+  sumSquaredDeviationX += deviationX * deviationX;
+  sumSquaredDeviationY += deviationY * deviationY;
+  sumDeviationXY += deviationX * deviationY;
+  if (sumSquaredDeviationX * sumSquaredDeviationY != 0.0) {
+    correlationCoefficient = sumDeviationXY / Math.sqrt(sumSquaredDeviationX * sumSquaredDeviationY);
   }
 
-  document.getElementById('drop-x').innerHTML = rainDrop.x;
-  document.getElementById('drop-y').innerHTML = rainDrop.y;
   document.getElementById('num-drops').innerHTML = numRainDrops;
-  document.getElementById('total-product-x').innerHTML = totalProductX;
-  document.getElementById('total-product-y').innerHTML = totalProductY;
-  document.getElementById('variance-x').innerHTML = varianceX;
-  document.getElementById('variance-y').innerHTML = varianceY;
+  document.getElementById('num-within-radius').innerHTML = numWithinRadius;
+  document.getElementById('pi').innerHTML = 4.0 * numWithinRadius / numRainDrops;
+  document.getElementById('average-x').innerHTML = averageX;
+  document.getElementById('average-y').innerHTML = averageY;
   document.getElementById('correlation-coefficient').innerHTML = correlationCoefficient;
 }
