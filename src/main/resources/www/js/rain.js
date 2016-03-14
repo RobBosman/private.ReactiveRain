@@ -18,13 +18,17 @@ eventBus.onopen = function() {
   var tileSvg = document.createElementNS(SVG_NS, "svg");
   document.getElementById("tile").appendChild(tileSvg);
 
-  eventBus.registerHandler('RainDrop', function(err, msg) {
+  eventBus.registerHandler('RainDrop', function (err, msg) {
     var rainDrop = msg.body;
     var drop = document.createElementNS(SVG_NS, "circle");
+    drop.setAttribute("r", "2%");
     drop.setAttribute("cx", 100.0 * rainDrop.x + "%");
     drop.setAttribute("cy", 100.0 * rainDrop.y + "%");
     tileSvg.appendChild(drop);
-    setTimeout(function() { tileSvg.removeChild(drop); }, DROP_TIME_TO_LIVE);
+
+    setTimeout(function () {
+      tileSvg.removeChild(drop);
+    }, DROP_TIME_TO_LIVE);
   });
 
   eventBus.registerHandler('RainDrop', updateDropCounter);

@@ -6,18 +6,27 @@ import java.util.Random;
 
 class RainDrop {
 
+  private static final Random RANDOM = new Random();
+
   private final float x;
   private final float y;
 
   public RainDrop() {
-    final Random random = new Random();
-    x = random.nextFloat();
-    y = random.nextFloat();
+    x = RANDOM.nextFloat();
+    y = RANDOM.nextFloat();
+  }
+
+  public float getX() {
+    return x;
+  }
+
+  public float getY() {
+    return y;
   }
 
   public JsonObject toJson() {
     return new JsonObject()
-        .put("x", x)
-        .put("y", y);
+        .put("x", getX())
+        .put("y", getY());
   }
 }

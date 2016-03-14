@@ -8,12 +8,12 @@ svg {
   height: 100%;
 }
 circle {
-  fill: #fff;
-  r: 0;
+  fill: #00f;
+  opacity: 0.0;
   animation-name: fade_drop;
   animation-duration: 2s;
 }
 @keyframes fade_drop {
-    0% {r: 2%; fill: #00f;}
-  100% {r: 0;  fill: #fff;}
+    0% {opacity: 1.0;}
+  100% {opacity: 0.0;}
 }
