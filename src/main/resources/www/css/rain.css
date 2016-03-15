@@ -1,17 +1,18 @@
 body {
   font-family: 'Raleway', sans-serif;
+  background: #eef;
 }
 #tile-wrapper, #rain-intensity, #statistics {
   float: left;
   padding: 0.3em;
 }
 #rain-intensity {
-  margin: 0 70px 0 10px;
+  margin: 0 4em 0.5em 0.5em;
   bottom: 0;
-  height: 20em;
+  height: 10em;
 }
-#statistics table {
-  width: 20em;
+#statistics {
+  width: 28em;
 }
 .value {
   font-family: 'Cousine';
@@ -34,7 +35,7 @@ body {
   bottom: 0;
   right: 0;
   left: 0;
-  background: #666;
+  background: #889;
   border: 0.2em outset #ccc;
 }
 
@@ -54,7 +55,6 @@ circle {
 }
 
 #correlation {
-  width: 20em;
   height: 3.5em;
 }
 .frame {

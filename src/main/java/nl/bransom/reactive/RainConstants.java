@@ -1,6 +1,10 @@
 package nl.bransom.reactive;
 
+import java.util.Random;
+
 interface RainConstants {
+
+  Random RANDOM = new Random();
 
   String RAIN_MAKER_ADDRESS = "RainMaker";
 

@@ -2,11 +2,7 @@ package nl.bransom.reactive;
 
 import io.vertx.core.json.JsonObject;
 
-import java.util.Random;
-
-class RainDrop {
-
-  private static final Random RANDOM = new Random();
+class RainDrop implements RainConstants {
 
   private final float x;
   private final float y;

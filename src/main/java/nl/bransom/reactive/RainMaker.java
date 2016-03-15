@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Subscriber;
 
-import java.util.Random;
-
 public class RainMaker extends AbstractVerticle implements RainConstants {
 
   private static final Logger LOG = LoggerFactory.getLogger(RainMaker.class);
@@ -23,8 +21,9 @@ public class RainMaker extends AbstractVerticle implements RainConstants {
         .map(jsonObject -> jsonObject.getDouble(INTENSITY_KEY))
         .map(this::intensityToIntervalMillis)
         .switchMap(this::createRainDrops)
+        .map(RainDrop::toJson)
         .subscribe(
-            rainDrop -> vertx.eventBus().publish(RAIN_DROP_ADDRESS, rainDrop.toJson()),
+            rainDropJson -> vertx.eventBus().publish(RAIN_DROP_ADDRESS, rainDropJson),
             throwable -> LOG.error("Error making rain.", throwable));
   }
 
@@ -54,7 +53,6 @@ public class RainMaker extends AbstractVerticle implements RainConstants {
   }
 
   private long sampleDelayMillis(final long intervalMillis) {
-    final Random random = new Random();
-    return Math.max(1, Math.round(2.0 * random.nextDouble() * intervalMillis));
+    return Math.max(1, Math.round(2.0 * RANDOM.nextDouble() * intervalMillis));
   }
 }
