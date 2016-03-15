@@ -34,11 +34,6 @@ public class RainMaker extends AbstractVerticle implements RainConstants {
     return Math.round(Math.pow(Math.E, Math.log(MAX_INTERVAL_MILLIS) * (1.0 - effectiveIntensity)));
   }
 
-  private long sampleDelayMillis(final long intervalMillis) {
-    final Random random = new Random();
-    return Math.max(1, Math.round(2.0 * random.nextDouble() * intervalMillis));
-  }
-
   private Observable<? extends RainDrop> createRainDrops(final long intervalMillis) {
     LOG.debug("intervalMillis: {}", intervalMillis);
     if (intervalMillis < MAX_INTERVAL_MILLIS) {
@@ -56,5 +51,10 @@ public class RainMaker extends AbstractVerticle implements RainConstants {
         createDelayedRainDrop(intervalMillis, subscriber);
       }
     });
+  }
+
+  private long sampleDelayMillis(final long intervalMillis) {
+    final Random random = new Random();
+    return Math.max(1, Math.round(2.0 * random.nextDouble() * intervalMillis));
   }
 }

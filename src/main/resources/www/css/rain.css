@@ -1,3 +1,6 @@
+body {
+  font-family: 'Raleway', sans-serif;
+}
 #tile-wrapper, #rain-intensity, #statistics {
   float: left;
   padding: 0.3em;
@@ -11,6 +14,7 @@
   width: 20em;
 }
 .value {
+  font-family: 'Cousine';
   text-align: right;
 }
 
@@ -30,8 +34,8 @@
   bottom: 0;
   right: 0;
   left: 0;
-  background: #eee;
-  border: 0.1em solid #007;
+  background: #666;
+  border: 0.2em outset #ccc;
 }
 
 svg {
@@ -39,7 +43,7 @@ svg {
   height: 100%;
 }
 circle {
-  fill: #777;
+  fill: aqua;
   opacity: 0.0;
   animation-name: fade_drop;
   animation-duration: 2s;

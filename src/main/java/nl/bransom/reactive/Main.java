@@ -43,13 +43,7 @@ public class Main implements RainConstants {
           }
         });
 
-//    vertx.eventBus()
-//        .<JsonObject>consumer(RAIN_DROP_ADDRESS)
-//        .toObservable()
-//        .map(Message::body)
-//        .subscribe(rainDropJsonObject -> LOG.debug("\t{}", rainDropJsonObject));
-
-//    vertx.setTimer(12000, timerId -> {
+//    vertx.setTimer(30000, timerId -> {
 //      vertx.close();
 //      LOG.info("And... it's gone!");
 //    });
