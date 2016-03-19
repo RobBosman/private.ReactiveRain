@@ -8,12 +8,12 @@ import io.vertx.rxjava.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Main implements RainConstants {
+public class Main {
 
   private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) {
-    if (CLUSTERED) {
+    if (RainConstants.CLUSTERED) {
       final VertxOptions options = new VertxOptions();
       Vertx.clusteredVertx(options, res -> {
         if (res.succeeded()) {
@@ -28,20 +28,25 @@ public class Main implements RainConstants {
   }
 
   private static void goForIt(final Vertx vertx) {
-    final Future<String> atRainMakerStart = Future.future();
-    final Future<String> atRainServerStart = Future.future();
+    final Future<String> whenRainMakerIsDeployed = Future.future();
+    final Future<String> whenRainIntensityMonitorIsDeployed = Future.future();
+    final Future<String> whenRainServerIsListening = Future.future();
 
-    vertx.deployVerticle(RainMaker.class.getName(), atRainMakerStart.completer());
-    vertx.deployVerticle(RainServer.class.getName(), atRainServerStart.completer());
+    vertx.deployVerticle(RainMaker.class.getName(), whenRainMakerIsDeployed.completer());
+    vertx.deployVerticle(RainIntensityMonitor.class.getName(), whenRainIntensityMonitorIsDeployed.completer());
+    vertx.deployVerticle(RainServer.class.getName(), whenRainServerIsListening.completer());
 
-    CompositeFuture.all(atRainMakerStart, atRainServerStart)
+    CompositeFuture.all(whenRainMakerIsDeployed, whenRainIntensityMonitorIsDeployed, whenRainServerIsListening)
         .setHandler(result -> {
           if (result.succeeded()) {
-            vertx.eventBus().send(RAIN_MAKER_ADDRESS, new JsonObject().put(INTENSITY_KEY, 0.0));
+            vertx.eventBus().publish(RainConstants.MSG_RAIN_INTENSITY_SET,
+                new JsonObject().put(RainConstants.INTENSITY_KEY, 0.0));
           } else {
             LOG.error("There won't be any rain today...", result.cause());
           }
         });
+
+//    vertx.eventBus().addInterceptor(context -> LOG.debug("EVENT '{}' = {}", context.message().address(), context.message().body()));
 
 //    vertx.setTimer(30000, timerId -> {
 //      vertx.close();

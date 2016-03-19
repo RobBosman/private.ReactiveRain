@@ -4,8 +4,10 @@ var SVG_NS = "http://www.w3.org/2000/svg";
 var DROP_TIME_TO_LIVE = 2000;
 
 var eventBus = new EventBus('/eventbus');
+
 var isEventBusOpen = false;
 var isSliderReady = false;
+var isUpdatingSlider = false;
 var numRainDrops = 0;
 var numWithinRadius = 0;
 var sumX = 0.0;
@@ -17,12 +19,15 @@ var sumSquaredDeviationY = 0.0;
 window.onload = initSlider;
 
 eventBus.onopen = function() {
-  eventBus.registerHandler('RainDrop', drawRainDrop);
-  eventBus.registerHandler('RainDrop', updateDropCounter);
-  eventBus.registerHandler('RainDrop', updateAverageX);
-  eventBus.registerHandler('RainDrop', updateAverageY);
-  eventBus.registerHandler('RainDrop', updateCorrelation);
-  eventBus.registerHandler('RainDrop', updatePi);
+  eventBus.registerHandler('rain.drop.notify', drawRainDrop);
+  eventBus.registerHandler('rain.drop.notify', updateDropCounter);
+  eventBus.registerHandler('rain.drop.notify', updateAverageX);
+  eventBus.registerHandler('rain.drop.notify', updateAverageY);
+  eventBus.registerHandler('rain.drop.notify', updateCorrelation);
+  eventBus.registerHandler('rain.drop.notify', updatePi);
+  eventBus.registerHandler('rain.intensity.set', '', updateRainIntensity);
+
+  eventBus.send('rain.intensity.get', '', updateRainIntensity);
   isEventBusOpen = true;
 };
 
@@ -94,9 +99,17 @@ function initSlider() {
     }
   });
   rainIntensitySlider.noUiSlider.on('update', function(values, handle) {
-    if (isSliderReady && isEventBusOpen) {
-      eventBus.send('RainMaker', {intensity: (values[handle] / 100.0)});
+    if (isSliderReady && isEventBusOpen && !isUpdatingSlider) {
+      eventBus.publish('rain.intensity.set', {intensity: (values[handle] / 100.0)});
     }
   });
   isSliderReady = true;
+}
+
+function updateRainIntensity(err, msg) {
+  var intensityPercentage = 100.0 * msg.body.intensity;
+  document.getElementById('intensity').innerHTML = intensityPercentage.toFixed(0) + "%";
+  isUpdatingSlider = true;
+  document.getElementById('rain-intensity').noUiSlider.set(intensityPercentage);
+  isUpdatingSlider = false;
 }

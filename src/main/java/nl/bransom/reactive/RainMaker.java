@@ -8,37 +8,37 @@ import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Subscriber;
 
-public class RainMaker extends AbstractVerticle implements RainConstants {
+public class RainMaker extends AbstractVerticle {
 
   private static final Logger LOG = LoggerFactory.getLogger(RainMaker.class);
 
   @Override
   public void start() {
     vertx.eventBus()
-        .<JsonObject>consumer(RAIN_MAKER_ADDRESS)
+        .<JsonObject>consumer(RainConstants.MSG_RAIN_INTENSITY_SET)
         .toObservable()
         .map(Message::body)
-        .map(jsonObject -> jsonObject.getDouble(INTENSITY_KEY))
+        .map(jsonObject -> jsonObject.getDouble(RainConstants.INTENSITY_KEY))
         .map(this::intensityToIntervalMillis)
         .switchMap(this::createRainDrops)
         .map(RainDrop::toJson)
         .subscribe(
-            rainDropJson -> vertx.eventBus().publish(RAIN_DROP_ADDRESS, rainDropJson),
+            rainDropJson -> vertx.eventBus().publish(RainConstants.MSG_RAIN_DROP_NOTIFY, rainDropJson),
             throwable -> LOG.error("Error making rain.", throwable));
   }
 
   private long intensityToIntervalMillis(final double intensity) {
     final double effectiveIntensity = Math.min(Math.max(0.0, intensity), 1.0);
     LOG.debug("intensity: {}", effectiveIntensity);
-    return Math.round(Math.pow(Math.E, Math.log(MAX_INTERVAL_MILLIS) * (1.0 - effectiveIntensity)));
+    return Math.round(Math.pow(Math.E, Math.log(RainConstants.MAX_INTERVAL_MILLIS) * (1.0 - effectiveIntensity)));
   }
 
   private Observable<? extends RainDrop> createRainDrops(final long intervalMillis) {
     LOG.debug("intervalMillis: {}", intervalMillis);
-    if (intervalMillis < MAX_INTERVAL_MILLIS) {
-      return Observable.<RainDrop>create(subscriber -> createDelayedRainDrop(intervalMillis, subscriber));
+    if (intervalMillis < RainConstants.MAX_INTERVAL_MILLIS) {
+      return Observable.create(subscriber -> createDelayedRainDrop(intervalMillis, subscriber));
     } else {
-      return Observable.empty();
+      return Observable.never();
     }
   }
 
@@ -53,6 +53,6 @@ public class RainMaker extends AbstractVerticle implements RainConstants {
   }
 
   private long sampleDelayMillis(final long intervalMillis) {
-    return Math.max(1, Math.round(2.0 * RANDOM.nextDouble() * intervalMillis));
+    return Math.max(1, Math.round(2.0 * RainConstants.RANDOM.nextDouble() * intervalMillis));
   }
 }

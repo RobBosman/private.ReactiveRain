@@ -10,7 +10,7 @@ import io.vertx.rxjava.ext.web.handler.sockjs.SockJSHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RainServer extends AbstractVerticle implements RainConstants {
+public class RainServer extends AbstractVerticle {
 
   private static final Logger LOG = LoggerFactory.getLogger(RainServer.class);
 
@@ -22,17 +22,19 @@ public class RainServer extends AbstractVerticle implements RainConstants {
     router.route("/eventbus/*")
         .handler(SockJSHandler.create(vertx)
             .bridge(new BridgeOptions()
-                .addInboundPermitted(new PermittedOptions().setAddress(RAIN_MAKER_ADDRESS))
-                .addOutboundPermitted(new PermittedOptions().setAddress(RAIN_DROP_ADDRESS))));
+                .addInboundPermitted(new PermittedOptions().setAddress(RainConstants.MSG_RAIN_INTENSITY_GET))
+                .addInboundPermitted(new PermittedOptions().setAddress(RainConstants.MSG_RAIN_INTENSITY_SET))
+                .addOutboundPermitted(new PermittedOptions().setAddress(RainConstants.MSG_RAIN_DROP_NOTIFY))
+                .addOutboundPermitted(new PermittedOptions().setAddress(RainConstants.MSG_RAIN_INTENSITY_SET))));
 
     router.route()
         .handler(StaticHandler.create("www").setIndexPage("rain.html"));
 
     vertx.createHttpServer()
         .requestHandler(router::accept)
-        .listen(SERVER_PORT, result -> {
+        .listen(RainConstants.SERVER_PORT, result -> {
           if (result.succeeded()) {
-            LOG.info("Server is now listening on http://localhost:{}/", SERVER_PORT);
+            LOG.info("Server is now listening on http://localhost:{}/", RainConstants.SERVER_PORT);
             futureResult.complete();
           } else {
             futureResult.fail(result.cause());
