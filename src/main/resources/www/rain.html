@@ -4,35 +4,42 @@
   <title>Rain</title>
   <link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="/css/rain.css">
-  <link rel="stylesheet" type="text/css" href="/css/nouislider.min.css">
   <script src="//cdn.jsdelivr.net/sockjs/1.0.3/sockjs.min.js"></script>
   <script src="/js/vertx-eventbus-3.2.1.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/nouislider.min.css">
   <script src="/js/nouislider.min.js"></script>
-  <script src="/js/rain.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/tile-with-rain-drops/tile-with-rain-drops.css">
+  <script src="/tile-with-rain-drops/tile-with-rain-drops.js"></script>
+  <link rel="stylesheet" type="text/css" href="/rain-intensity/rain-intensity.css">
+  <script src="/rain-intensity/rain-intensity.js"></script>
+  <link rel="stylesheet" type="text/css" href="/randomness-statistics/randomness-statistics.css">
+  <script src="/randomness-statistics/randomness-statistics.js"></script>
+  <script src="/pi-approximation/pi-approximation.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/rain.css">
+  <script src="/rain.js"></script>
 </head>
 <body>
 <h1>Reactive rain in Monte Carlo</h1>
 
-<div id="tile-wrapper">
-  <svg xmlns="http://www.w3.org/2000/svg" id="tile"></svg>
+<div id="tile-with-rain-drops">
+  <svg xmlns="http://www.w3.org/2000/svg" id="tile-with-rain-drops-svg"></svg>
 </div>
 
 <div id="rain-intensity"></div>
+<table width="100%">
+  <tr>
+    <td>rain intensity</td>
+    <td class="value">
+      <div id="rain-intensity-percentage"></div>
+    </td>
+  </tr>
+  <tr>
+</table>
 
-<div id="statistics">
+<div id="randomness-statistics">
   <table width="100%">
-    <tr>
-      <td>intensity</td>
-      <td class="value">
-        <div id="intensity"></div>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <hr/>
-      </td>
-    </tr>
     <tr>
       <td>average x</td>
       <td class="value">
@@ -51,11 +58,12 @@
         <div id="correlation-coefficient"></div>
       </td>
     </tr>
-    <tr>
-      <td colspan="2">
-        <hr/>
-      </td>
-    </tr>
+  </table>
+</div>
+
+
+<div id="pi-approximation">
+  <table width="100%">
     <tr>
       <td>total number of drops</td>
       <td class="value">
