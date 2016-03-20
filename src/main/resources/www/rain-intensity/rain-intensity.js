@@ -27,7 +27,7 @@ function RainIntensity() {
     rainIntensitySlider.noUiSlider.on('update', function(values, handle) {
       if (isSliderInitialized && isEventBusOpen && !isUpdatingSlider) {
         eventBus.publish('rain.intensity.set', {
-            'intensity': (values[handle] / 100.0)
+            'value': (values[handle] / 100.0)
           },
           {'id': ID});
       }
@@ -37,7 +37,7 @@ function RainIntensity() {
   };
 
   this.updateRainIntensity = function(err, msg) {
-    var intensityPercentage = 100.0 * msg.body.intensity;
+    var intensityPercentage = 100.0 * msg.body.value;
     document.getElementById('rain-intensity-percentage').innerHTML = intensityPercentage.toFixed(0) + "%";
     if (msg.headers == null || msg.headers.id != ID) {
       isUpdatingSlider = true;

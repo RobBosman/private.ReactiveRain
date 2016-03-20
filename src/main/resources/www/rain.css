@@ -2,11 +2,14 @@ body {
   font-family: 'Raleway', sans-serif;
   background: #eef;
 }
-#tile-with-rain-drops, #rain-intensity, #statistics {
+#tile-with-rain-drops, #rain-intensity, #rain-intensity-value, #randomness-statistics, #pi-approximation {
   float: left;
   padding: 0.3em;
 }
 
+#rain-intensity-value, #randomness-statistics, #pi-approximation {
+  width: 28em;
+}
 .value {
   font-family: 'Cousine';
   text-align: right;

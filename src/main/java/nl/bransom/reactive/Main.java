@@ -1,10 +1,10 @@
 package nl.bransom.reactive;
 
+import io.vertx.core.CompositeFuture;
+import io.vertx.core.Future;
+import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
-import io.vertx.rxjava.core.CompositeFuture;
-import io.vertx.rxjava.core.Future;
-import io.vertx.rxjava.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +39,8 @@ public class Main {
     CompositeFuture.all(whenRainMakerIsDeployed, whenRainIntensityMonitorIsDeployed, whenRainServerIsListening)
         .setHandler(result -> {
           if (result.succeeded()) {
-            vertx.eventBus().publish(RainConstants.MSG_RAIN_INTENSITY_SET,
-                new JsonObject().put(RainConstants.INTENSITY_KEY, 0.0));
+            vertx.eventBus().publish(RainConstants.RAIN_INTENSITY_SET_MSG,
+                new JsonObject().put(RainConstants.VALUE_KEY, 0.0));
           } else {
             LOG.error("There won't be any rain today...", result.cause());
           }

@@ -12,9 +12,9 @@ interface RainConstants {
 
   long MAX_INTERVAL_MILLIS = 3000;
 
-  String MSG_RAIN_INTENSITY_SET = "rain.intensity.set";
-  String MSG_RAIN_INTENSITY_GET = "rain.intensity.get";
-  String MSG_RAIN_DROP_NOTIFY = "rain.drop.notify";
+  String RAIN_INTENSITY_SET_MSG = "rain.intensity.set";
+  String RAIN_INTENSITY_GET_MSG = "rain.intensity.get";
+  String RAIN_DROP_NOTIFY_MSG = "rain.drop.notify";
 
-  String INTENSITY_KEY = "intensity";
+  String VALUE_KEY = "value";
 }
