@@ -4,7 +4,7 @@ function RainIntensity() {
 
   var ID = Math.random().toFixed(10);
   var rainIntensitySlider;
-  var isSliderActive = false;
+  var isSuppressingUpdates = true;
 
   this.initializeSlider = function() {
     rainIntensitySlider = document.getElementById('rain-intensity');
@@ -18,21 +18,23 @@ function RainIntensity() {
       },
       pips: {
         mode: 'positions',
-        values: [0,25,50,75,100],
+        values: [0, 25, 50, 75, 100],
         density: 4
       }
     });
 
     rainIntensitySlider.noUiSlider.on('update', function(values, handle) {
-      if (isSliderActive) {
+      if (!isSuppressingUpdates) {
         eventBus.publish('rain.intensity.set', {
-            'value': (values[handle] / 100.0)
+            'value': values[handle] / 100.0
           },
-          {'id': ID});
+          {
+            'id': ID
+          });
       }
     });
 
-    isSliderActive = true;
+    isSuppressingUpdates = false;
     whenSliderIsReady.completed();
   };
 
@@ -40,9 +42,9 @@ function RainIntensity() {
     var intensityPercentage = 100.0 * msg.body.value;
     document.getElementById('rain-intensity-percentage').innerHTML = intensityPercentage.toFixed(0) + "%";
     if (msg.headers == null || msg.headers.id != ID) {
-      isSliderActive = false;
+      isSuppressingUpdates = true;
       rainIntensitySlider.noUiSlider.set(intensityPercentage);
-      isSliderActive = true;
+      isSuppressingUpdates = false;
     }
   };
 

@@ -23,7 +23,7 @@ whenEventBusIsOpen
       eventBus.registerHandler('rain.drop.notify', piApproximation.updatePi);
     });
 
-new Future()
+new CompositeFuture()
     .and(whenSliderIsReady)
     .and(whenEventBusIsOpen)
     .thenDo(function() {
