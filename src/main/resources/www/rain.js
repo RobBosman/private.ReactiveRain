@@ -1,14 +1,12 @@
 "use strict";
 
-window.onload = whenDomIsReady.completed;
-
+var eventBus = new EventBus('/eventbus');
 var tileWithRainDrops = new TileWithRainDrops();
 var rainIntensity = new RainIntensity();
 var randomnessStatistics = new RandomnessStatistics();
 var piApproximation = new PiApproximation();
 
-var eventBus = new EventBus('/eventbus');
-
+window.onload = whenDomIsReady.completed;
 eventBus.onopen = whenEventBusIsOpen.completed;
 
 whenEventBusIsOpen
@@ -25,7 +23,7 @@ whenEventBusIsOpen
       eventBus.registerHandler('rain.drop.notify', piApproximation.updatePi);
     });
 
-new CompositeFuture()
+new Future()
     .and(whenSliderIsReady)
     .and(whenEventBusIsOpen)
     .thenDo(function() {

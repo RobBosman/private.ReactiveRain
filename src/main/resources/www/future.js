@@ -3,7 +3,14 @@
 function Future() {
 
   var callbackFunctions = [];
+  var chainedFutures = [];
   var self = this;
+
+  this.and = function(nextFuture) {
+    chainedFutures[chainedFutures.length] = nextFuture;
+    nextFuture.thenDo(this.futureCallback);
+    return this;
+  };
 
   this.thenDo = function(callbackFunction) {
     callbackFunctions[callbackFunctions.length] = callbackFunction;
@@ -15,33 +22,18 @@ function Future() {
       callbackFunctions[i](self);
     }
   };
-}
-
-
-function CompositeFuture() {
-
-  var handler = new Future();
-  var futures = [];
-
-  this.and = function(future) {
-    futures[futures.length] = future;
-    future.thenDo(this.futureCallback);
-    return this;
-  };
-
-  this.thenDo = handler.thenDo;
 
   this.futureCallback = function(completedFuture) {
-    var allDone = true;
-    for (var i = 0; i < futures.length; i++) {
-      if (futures[i] == completedFuture) {
-        futures[i] = null;
-      } else if (futures[i] != null) {
-        allDone = false;
+    var allCompleted = true;
+    for (var i = 0; i < chainedFutures.length; i++) {
+      if (chainedFutures[i] == completedFuture) {
+        chainedFutures[i] = null;
+      } else if (chainedFutures[i] != null) {
+        allCompleted = false;
       }
     }
-    if (allDone) {
-      handler.completed();
+    if (allCompleted) {
+      self.completed();
     }
   };
 }
