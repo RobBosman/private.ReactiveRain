@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rain</title>
+  <title>Reactive Rain</title>
   <link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'>
   <script src="//cdn.jsdelivr.net/sockjs/1.0.3/sockjs.min.js"></script>
@@ -15,7 +15,9 @@
   <script src="/tile-with-rain-drops/tile-with-rain-drops.js"></script>
   <link rel="stylesheet" type="text/css" href="/rain-intensity/rain-intensity.css">
   <script src="/rain-intensity/rain-intensity.js"></script>
+  <link rel="stylesheet" type="text/css" href="/randomness-statistics/randomness-statistics.css">
   <script src="/randomness-statistics/randomness-statistics.js"></script>
+  <link rel="stylesheet" type="text/css" href="/pi-approximation/pi-approximation.css">
   <script src="/pi-approximation/pi-approximation.js"></script>
 
   <link rel="stylesheet" type="text/css" href="/rain.css">
@@ -24,13 +26,13 @@
 <body>
 <h1>Reactive rain in Monte Carlo</h1>
 
-<div id="tile-with-rain-drops">
+<div id="tile-with-rain-drops" class="main">
   <svg xmlns="http://www.w3.org/2000/svg" id="tile-with-rain-drops-svg"></svg>
 </div>
 
-<div id="rain-intensity"></div>
+<div id="rain-intensity" class="main"></div>
 
-<div id="rain-intensity-value">
+<div id="rain-intensity-value" class="main">
   <table width="100%">
     <tr>
       <td>rain intensity</td>
@@ -42,7 +44,7 @@
   </table>
 </div>
 
-<div id="randomness-statistics">
+<div id="randomness-statistics" class="main">
   <table width="100%">
     <tr>
       <td>average x</td>
@@ -66,7 +68,7 @@
 </div>
 
 
-<div id="pi-approximation">
+<div id="pi-approximation" class="main">
   <table width="100%">
     <tr>
       <td>total number of drops</td>
@@ -75,13 +77,13 @@
       </td>
     </tr>
     <tr>
-      <td>number of drops within radius</td>
+      <td>number of drops with d &lt;= 1</td>
       <td class="value">
         <div id="num-within-radius"></div>
       </td>
     </tr>
     <tr>
-      <td>pi</td>
+      <td>approximation of &pi;</td>
       <td class="value">
         <div id="pi"></div>
       </td>
