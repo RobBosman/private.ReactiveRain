@@ -4,24 +4,16 @@
   <title>Reactive Rain</title>
   <link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="/css/nouislider.min.css">
   <script src="//cdn.jsdelivr.net/sockjs/1.0.3/sockjs.min.js"></script>
   <script src="/js/vertx-eventbus-3.2.1.js"></script>
-  <link rel="stylesheet" type="text/css" href="/css/nouislider.min.css">
   <script src="/js/nouislider.min.js"></script>
 
-  <script src="/future.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="/tile-with-rain-drops/tile-with-rain-drops.css">
-  <script src="/tile-with-rain-drops/tile-with-rain-drops.js"></script>
-  <link rel="stylesheet" type="text/css" href="/rain-intensity/rain-intensity.css">
-  <script src="/rain-intensity/rain-intensity.js"></script>
-  <link rel="stylesheet" type="text/css" href="/randomness-statistics/randomness-statistics.css">
-  <script src="/randomness-statistics/randomness-statistics.js"></script>
-  <link rel="stylesheet" type="text/css" href="/pi-approximation/pi-approximation.css">
-  <script src="/pi-approximation/pi-approximation.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="/rain.css">
-  <script src="/rain.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/tile-with-rain-drops.css">
+  <link rel="stylesheet" type="text/css" href="/css/rain-intensity.css">
+  <link rel="stylesheet" type="text/css" href="/css/randomness-statistics.css">
+  <link rel="stylesheet" type="text/css" href="/css/pi-approximation.css">
+  <link rel="stylesheet" type="text/css" href="/css/rain.css">
 </head>
 <body>
 <h1>Reactive rain in Monte Carlo</h1>
@@ -41,6 +33,29 @@
       </td>
     </tr>
     <tr>
+  </table>
+</div>
+
+<div id="pi-approximation" class="main">
+  <table width="100%">
+    <tr>
+      <td>total number of drops</td>
+      <td class="value">
+        <div id="num-drops"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>number of drops with <i>d</i> &le; 1</td>
+      <td class="value">
+        <div id="num-within-radius"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>approximation of &pi;</td>
+      <td class="value">
+        <div id="pi"></div>
+      </td>
+    </tr>
   </table>
 </div>
 
@@ -67,29 +82,12 @@
   </table>
 </div>
 
-
-<div id="pi-approximation" class="main">
-  <table width="100%">
-    <tr>
-      <td>total number of drops</td>
-      <td class="value">
-        <div id="num-drops"></div>
-      </td>
-    </tr>
-    <tr>
-      <td>number of drops with d &le; 1</td>
-      <td class="value">
-        <div id="num-within-radius"></div>
-      </td>
-    </tr>
-    <tr>
-      <td>approximation of &pi;</td>
-      <td class="value">
-        <div id="pi"></div>
-      </td>
-    </tr>
-  </table>
-</div>
+<script src="/js/future.js"></script>
+<script src="/js/tile-with-rain-drops.js"></script>
+<script src="/js/rain-intensity.js"></script>
+<script src="/js/randomness-statistics.js"></script>
+<script src="/js/pi-approximation.js"></script>
+<script src="/js/rain.js"></script>
 
 </body>
 </html>

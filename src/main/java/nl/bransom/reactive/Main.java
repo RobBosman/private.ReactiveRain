@@ -32,6 +32,11 @@ public class Main {
     final Future<String> whenRainIntensityMonitorIsDeployed = Future.future();
     final Future<String> whenRainServerIsListening = Future.future();
 
+//    vertx.deployVerticle(RainMaker.class.getName());
+//    vertx.deployVerticle(RainMaker.class.getName());
+//    vertx.deployVerticle(RainMaker.class.getName());
+//    vertx.deployVerticle(RainMaker.class.getName());
+
     vertx.deployVerticle(RainMaker.class.getName(), whenRainMakerIsDeployed.completer());
     vertx.deployVerticle(RainIntensityMonitor.class.getName(), whenRainIntensityMonitorIsDeployed.completer());
     vertx.deployVerticle(RainServer.class.getName(), whenRainServerIsListening.completer());

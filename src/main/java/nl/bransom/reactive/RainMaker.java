@@ -19,7 +19,7 @@ public class RainMaker extends AbstractVerticle {
         .toObservable()
         .map(Message::body)
         .map(jsonObject -> jsonObject.getDouble(RainConstants.VALUE_KEY))
-        .map(this::intensityToIntervalMillis)
+        .map(RainMaker::intensityToIntervalMillis)
         .switchMap(this::createRainDropObservable)
         .map(RainDrop::toJson)
         .subscribe(
@@ -27,7 +27,7 @@ public class RainMaker extends AbstractVerticle {
             throwable -> LOG.error("Error making rain.", throwable));
   }
 
-  private long intensityToIntervalMillis(final double intensity) {
+  private static long intensityToIntervalMillis(final double intensity) {
     final double effectiveIntensity = Math.min(Math.max(0.0, intensity), 1.0);
     LOG.debug("intensity: {}", effectiveIntensity);
     return Math.round(Math.pow(Math.E, Math.log(RainConstants.MAX_INTERVAL_MILLIS) * (1.0 - effectiveIntensity)));
@@ -52,7 +52,7 @@ public class RainMaker extends AbstractVerticle {
     });
   }
 
-  private long sampleDelayMillis(final long intervalMillis) {
+  private static long sampleDelayMillis(final long intervalMillis) {
     return Math.max(1, Math.round(2.0 * RainConstants.RANDOM.nextDouble() * intervalMillis));
   }
 }
