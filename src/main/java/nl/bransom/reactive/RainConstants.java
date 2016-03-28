@@ -1,5 +1,6 @@
 package nl.bransom.reactive;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 interface RainConstants {
@@ -8,7 +9,7 @@ interface RainConstants {
 
   boolean CLUSTERED = false;
 
-  Random RANDOM = new Random();
+  Random RANDOM = new SecureRandom();
 
   long MAX_INTERVAL_MILLIS = 3000;
 
