@@ -36,7 +36,7 @@ public class RainMaker extends AbstractVerticle {
   private Observable<? extends RainDrop> createRainDropObservable(final long intervalMillis) {
     LOG.debug("intervalMillis: {}", intervalMillis);
     if (intervalMillis < RainConstants.MAX_INTERVAL_MILLIS) {
-      return Observable.create(subscriber -> createDelayedRainDrop(intervalMillis, subscriber));
+      return Observable.unsafeCreate(subscriber -> createDelayedRainDrop(intervalMillis, subscriber));
     } else {
       return Observable.never();
     }

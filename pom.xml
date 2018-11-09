@@ -10,6 +10,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <vertex.version>3.5.4</vertex.version>
   </properties>
 
   <build>
@@ -18,8 +19,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
     </plugins>
@@ -30,28 +31,28 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.0.13</version>
+      <version>1.2.3</version>
     </dependency>
 
     <!-- Vertx core -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>3.2.1</version>
+      <version>${vertex.version}</version>
     </dependency>
 
     <!-- Vertx Rx-ified API -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-rx-java</artifactId>
-      <version>3.2.1</version>
+      <version>${vertex.version}</version>
     </dependency>
 
     <!-- Vertx web -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
-      <version>3.2.1</version>
+      <version>${vertex.version}</version>
     </dependency>
 
     <!-- Vertx cluster manager -->
@@ -59,7 +60,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-hazelcast</artifactId>
-      <version>3.2.1</version>
+      <version>${vertex.version}</version>
     </dependency>
     -->
 
@@ -71,9 +72,15 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.3.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-unit</artifactId>
-      <version>3.2.1</version>
+      <version>${vertex.version}</version>
       <scope>test</scope>
     </dependency>
 
