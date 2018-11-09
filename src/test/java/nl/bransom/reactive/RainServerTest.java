@@ -5,7 +5,7 @@ import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestSuite;
 import org.junit.jupiter.api.Test;
 
-class RainServer5Test {
+class RainServerTest {
 
   private Vertx vertx;
 
