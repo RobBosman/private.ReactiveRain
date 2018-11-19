@@ -1,4 +1,4 @@
-package nl.bransom.reactive;
+package nl.bransom.reactive.rain;
 
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
@@ -14,8 +14,7 @@ public class Main {
 
   public static void main(String[] args) {
     if (RainConstants.CLUSTERED) {
-      final VertxOptions options = new VertxOptions();
-      Vertx.clusteredVertx(options, res -> {
+      Vertx.clusteredVertx(new VertxOptions(), res -> {
         if (res.succeeded()) {
           goForIt(res.result());
         } else {

@@ -1,4 +1,4 @@
-package nl.bransom.reactive;
+package nl.bransom.reactive.rain;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.AbstractVerticle;
@@ -11,6 +11,16 @@ import rx.Subscriber;
 public class RainMaker extends AbstractVerticle {
 
   private static final Logger LOG = LoggerFactory.getLogger(RainMaker.class);
+
+  private static long intensityToIntervalMillis(final double intensity) {
+    final double effectiveIntensity = Math.min(Math.max(0.0, intensity), 1.0);
+    LOG.debug("intensity: {}", effectiveIntensity);
+    return Math.round(Math.pow(Math.E, Math.log(RainConstants.MAX_INTERVAL_MILLIS) * (1.0 - effectiveIntensity)));
+  }
+
+  private static long sampleDelayMillis(final long intervalMillis) {
+    return Math.max(1, Math.round(2.0 * RainConstants.RANDOM.nextDouble() * intervalMillis));
+  }
 
   @Override
   public void start() {
@@ -25,12 +35,6 @@ public class RainMaker extends AbstractVerticle {
         .subscribe(
             rainDropJson -> vertx.eventBus().publish(RainConstants.RAIN_DROP_NOTIFY_MSG, rainDropJson),
             throwable -> LOG.error("Error making rain.", throwable));
-  }
-
-  private static long intensityToIntervalMillis(final double intensity) {
-    final double effectiveIntensity = Math.min(Math.max(0.0, intensity), 1.0);
-    LOG.debug("intensity: {}", effectiveIntensity);
-    return Math.round(Math.pow(Math.E, Math.log(RainConstants.MAX_INTERVAL_MILLIS) * (1.0 - effectiveIntensity)));
   }
 
   private Observable<? extends RainDrop> createRainDropObservable(final long intervalMillis) {
@@ -50,9 +54,5 @@ public class RainMaker extends AbstractVerticle {
         createDelayedRainDrop(intervalMillis, subscriber);
       }
     });
-  }
-
-  private static long sampleDelayMillis(final long intervalMillis) {
-    return Math.max(1, Math.round(2.0 * RainConstants.RANDOM.nextDouble() * intervalMillis));
   }
 }

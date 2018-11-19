@@ -1,4 +1,4 @@
-package nl.bransom.reactive;
+package nl.bransom.reactive.rain;
 
 import io.vertx.core.Future;
 import io.vertx.ext.bridge.PermittedOptions;

@@ -1,4 +1,4 @@
-package nl.bransom.reactive;
+package nl.bransom.reactive.rain;
 
 import java.security.SecureRandom;
 import java.util.Random;

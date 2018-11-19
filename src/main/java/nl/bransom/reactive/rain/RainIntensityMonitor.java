@@ -1,4 +1,4 @@
-package nl.bransom.reactive;
+package nl.bransom.reactive.rain;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.AbstractVerticle;
