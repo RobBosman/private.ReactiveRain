@@ -22,10 +22,10 @@ public class RainServer extends AbstractVerticle {
     router.route("/eventbus/*")
         .handler(SockJSHandler.create(vertx)
             .bridge(new BridgeOptions()
-                .addInboundPermitted(new PermittedOptions().setAddress(RainConstants.RAIN_INTENSITY_GET_MSG))
-                .addInboundPermitted(new PermittedOptions().setAddress(RainConstants.RAIN_INTENSITY_SET_MSG))
-                .addOutboundPermitted(new PermittedOptions().setAddress(RainConstants.RAIN_DROP_NOTIFY_MSG))
-                .addOutboundPermitted(new PermittedOptions().setAddress(RainConstants.RAIN_INTENSITY_SET_MSG))));
+                .addInboundPermitted(new PermittedOptions().setAddress(RainConstants.RAIN_INTENSITY_GET_ADDRESS))
+                .addInboundPermitted(new PermittedOptions().setAddress(RainConstants.RAIN_INTENSITY_SET_ADDRESS))
+                .addOutboundPermitted(new PermittedOptions().setAddress(RainConstants.RAIN_DROP_NOTIFY_ADDRESS))
+                .addOutboundPermitted(new PermittedOptions().setAddress(RainConstants.RAIN_INTENSITY_SET_ADDRESS))));
 
     router.route()
         .handler(StaticHandler.create("www").setIndexPage("rain.html"));

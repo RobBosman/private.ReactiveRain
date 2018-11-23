@@ -27,23 +27,18 @@ public class Main {
   }
 
   private static void goForIt(final Vertx vertx) {
-    final Future<String> whenRainMakerIsDeployed = Future.future();
-    final Future<String> whenRainIntensityMonitorIsDeployed = Future.future();
-    final Future<String> whenRainServerIsListening = Future.future();
-
-//    vertx.deployVerticle(RainMaker.class.getName());
-//    vertx.deployVerticle(RainMaker.class.getName());
-//    vertx.deployVerticle(RainMaker.class.getName());
-//    vertx.deployVerticle(RainMaker.class.getName());
-
-    vertx.deployVerticle(RainMaker.class.getName(), whenRainMakerIsDeployed.completer());
-    vertx.deployVerticle(RainIntensityMonitor.class.getName(), whenRainIntensityMonitorIsDeployed.completer());
-    vertx.deployVerticle(RainServer.class.getName(), whenRainServerIsListening.completer());
-
-    CompositeFuture.all(whenRainMakerIsDeployed, whenRainIntensityMonitorIsDeployed, whenRainServerIsListening)
+    CompositeFuture
+        .all(
+//            deployVerticle(vertx, RainMaker.class.getName()),
+//            deployVerticle(vertx, RainMaker.class.getName()),
+//            deployVerticle(vertx, RainMaker.class.getName()),
+            deployVerticle(vertx, RainMaker.class.getName()),
+            deployVerticle(vertx, RainIntensityMonitor.class.getName()),
+            deployVerticle(vertx, RainServer.class.getName())
+        )
         .setHandler(result -> {
           if (result.succeeded()) {
-            vertx.eventBus().publish(RainConstants.RAIN_INTENSITY_SET_MSG,
+            vertx.eventBus().publish(RainConstants.RAIN_INTENSITY_SET_ADDRESS,
                 new JsonObject().put(RainConstants.VALUE_KEY, 0.0));
           } else {
             LOG.error("There won't be any rain today...", result.cause());
@@ -56,5 +51,17 @@ public class Main {
 //      vertx.close();
 //      LOG.info("And... it's gone!");
 //    });
+  }
+
+  private static Future<Void> deployVerticle(final Vertx vertx, final String verticleName) {
+    final Future<Void> result = Future.future();
+    vertx.deployVerticle(verticleName, deployResult -> {
+      if (deployResult.succeeded()) {
+        result.complete();
+      } else {
+        result.fail(deployResult.cause());
+      }
+    });
+    return result;
   }
 }

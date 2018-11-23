@@ -13,7 +13,7 @@ public class RainMaker extends AbstractVerticle {
   private static final Logger LOG = LoggerFactory.getLogger(RainMaker.class);
 
   private static long intensityToIntervalMillis(final double intensity) {
-    final double effectiveIntensity = Math.min(Math.max(0.0, intensity), 1.0);
+    final var effectiveIntensity = Math.min(Math.max(0.0, intensity), 1.0);
     LOG.debug("intensity: {}", effectiveIntensity);
     return Math.round(Math.pow(Math.E, Math.log(RainConstants.MAX_INTERVAL_MILLIS) * (1.0 - effectiveIntensity)));
   }
@@ -25,7 +25,7 @@ public class RainMaker extends AbstractVerticle {
   @Override
   public void start() {
     vertx.eventBus()
-        .<JsonObject>consumer(RainConstants.RAIN_INTENSITY_SET_MSG)
+        .<JsonObject>consumer(RainConstants.RAIN_INTENSITY_SET_ADDRESS)
         .toObservable()
         .map(Message::body)
         .map(jsonObject -> jsonObject.getDouble(RainConstants.VALUE_KEY))
@@ -33,7 +33,7 @@ public class RainMaker extends AbstractVerticle {
         .switchMap(this::createRainDropObservable)
         .map(RainDrop::toJson)
         .subscribe(
-            rainDropJson -> vertx.eventBus().publish(RainConstants.RAIN_DROP_NOTIFY_MSG, rainDropJson),
+            rainDropJson -> vertx.eventBus().publish(RainConstants.RAIN_DROP_NOTIFY_ADDRESS, rainDropJson),
             throwable -> LOG.error("Error making rain.", throwable));
   }
 
@@ -47,7 +47,7 @@ public class RainMaker extends AbstractVerticle {
   }
 
   private void createDelayedRainDrop(final long intervalMillis, final Subscriber<? super RainDrop> subscriber) {
-    final long delayMillis = sampleDelayMillis(intervalMillis);
+    final var delayMillis = sampleDelayMillis(intervalMillis);
     vertx.setTimer(delayMillis, timerId -> {
       if (!subscriber.isUnsubscribed()) {
         subscriber.onNext(new RainDrop());

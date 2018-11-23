@@ -9,10 +9,10 @@ public class RainIntensityMonitor extends AbstractVerticle {
   @Override
   public void start() {
     vertx.eventBus()
-        .<JsonObject>consumer(RainConstants.RAIN_INTENSITY_GET_MSG)
+        .<JsonObject>consumer(RainConstants.RAIN_INTENSITY_GET_ADDRESS)
         .toObservable()
         .withLatestFrom(vertx.eventBus()
-                .<JsonObject>consumer(RainConstants.RAIN_INTENSITY_SET_MSG)
+                .<JsonObject>consumer(RainConstants.RAIN_INTENSITY_SET_ADDRESS)
                 .toObservable()
                 .map(Message::body)
                 .map(jsonObject -> jsonObject.getDouble(RainConstants.VALUE_KEY)),
